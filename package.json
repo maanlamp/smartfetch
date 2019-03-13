@@ -2,7 +2,7 @@
   "name": "smartfetch",
   "version": "1.0.0",
   "description": "An error-correcting fetcher in JavaScript",
-  "main": "src/smartfetch.js",
+  "main": "dist/smartfetch.js",
   "scripts": {
     "build": "babel src -d dist"
   },
