@@ -108,3 +108,103 @@ export default async function smartfetch (url = "", options = {
 		}
 	}
 }
+
+// function range (size = 0, end = size) {
+// 	//refactor this shizzle?
+// 	if (size === end) return [...Array(size).keys()];
+// 	return [...Array(end - size).keys()].map((_, i) => i + size);
+// }
+
+// function timeout (timeout) {
+// 	return new Promise(resolve => {
+// 		setTimeout(resolve, timeout);
+// 	});
+// }
+
+// function expBackoff (tries) {
+// 	return tries ** 2 * 1000 + Math.floor(Math.random() * 1000) * Number(tries);
+// }
+
+// function invertPromise (promise) {
+// 	return new Promise((resolve, reject) => promise.then(reject, resolve));
+// }
+
+// function firstResolved (promises) {
+// 	return invertPromise(Promise.all(promises.map(invertPromise)));
+// }
+
+// async function correctFetchResponse (request) {
+// 	const response = await request;
+// 	if (response.status >= 200 && response.status < 300) return response;
+// 	else throw response;
+// }
+
+// export default function smartfetch (url, {
+// 	maxTries = 5,
+// 	maxTimeout = 30,
+// 	format = "json",
+// 	useCache = true,
+// 	cache = {
+// 		get: (key) => localStorage.getItem(String(key)),
+// 		set: (key, value) => localStorage.setItem(String(key), value),
+// 		contains: (key) => localStorage.getItem(String(key)) !== null,
+// 		getTransformer: (val) => JSON.parse(val),
+// 		setTransformer: (val) => JSON.stringify(val),
+// 		keyTransformer: (response) => response.url,
+// 		valueTransformer: async (response) => response[format]()
+// 	}
+// } = {}) {
+// 	function inCache (key) {
+// 		return cache.contains(key);
+// 	}
+
+// 	function setCache (key, value) {
+// 		cache.set(key, (typeof cache.setTransformer === "function")
+// 			? cache.setTransformer(value)
+// 			: value);
+
+// 		return value;
+// 	}
+
+// 	function getCache (key) {
+// 		const value = cache.get(key);
+
+// 		return (typeof cache.getTransformer === "function")
+// 			? cache.getTransformer(value)
+// 			: value;
+// 	}
+
+// 	const controller = new AbortController();
+// 	const { signal } = controller;
+// 	const queue = range(maxTries)
+// 		.map(tries => timeout(expBackoff(tries)))
+// 		.map(timeout => timeout.then(() => fetch(url, { signal })))
+// 		.map(correctFetchResponse);
+
+// 	const response = firstResolved(queue)
+// 		.then(async response => {
+// 			console.log("first was resolved");
+// 			// controller.abort(); // Should abort after proper response
+// 			if (useCache) {
+// 				const key = (typeof cache.keyTransformer === "function")
+// 					? await cache.keyTransformer(response)
+// 					: response.url;
+// 				const val = (typeof cache.valueTransformer === "function")
+// 					? await cache.valueTransformer(response)
+// 					: await response[format]();
+
+// 				if (!inCache(key)) setCache(key, val);
+
+// 				return getCache(key);
+// 			}
+
+// 			return response[format]();
+// 		});
+
+// 	function abort () {
+// 		controller.abort();
+// 		//Should immediately reject request, not error x remaining times and then throw [errors].
+// 	}
+
+// 	return Object.assign(response, { abort });
+// }
