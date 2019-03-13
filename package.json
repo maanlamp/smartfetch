@@ -1,0 +1,19 @@
+{
+  "name": "smartfetch",
+  "version": "1.0.0",
+  "description": "An error-correcting fetcher in JavaScript",
+  "main": "src/smartfetch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maanlamp/smartfetch.git"
+  },
+  "author": "maanlamp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maanlamp/smartfetch/issues"
+  },
+  "homepage": "https://github.com/maanlamp/smartfetch#readme"
+}
