@@ -36,7 +36,8 @@ export default async function smartfetch (url = "", options = {
 		//Filter safe headers from object
 		return {
 			headers: {
-				"Accept": `application/${format}`
+				"Accept": `application/${format}`,
+				"Origin": null
 			}
 		};
 	}
