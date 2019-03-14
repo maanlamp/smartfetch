@@ -12,15 +12,21 @@ async function smartfetch(url = "", options = {
     get: key => JSON.parse(window.localStorage.getItem(String(key))),
     set: (key, val) => window.localStorage.setItem(String(key), JSON.stringify(val))
   },
-  format: "json",
+  fetch: window.fetch,
   maxTimeout: 30
 }) {
   //Acts like a fetch, but retries n times before rejecting if server is busy
   //implements exponential backoff https://developers.google.com/analytics/devguides/reporting/core/v3/errors#backoff
+  const {
+    maxTries,
+    format,
+    store,
+    fetch,
+    maxTimeout
+  } = options;
   const cached = inCache(url);
   if (cached !== false) return cached;
   const fetchOptions = getFetchSafeOptions(options);
-  const maxTries = options.maxTries;
   const retryStatusCodes = [500, 502, 503, 504, 429];
   const retryStatusTexts = ["Internal Server Error", //500
   "Bad Gateway", //502
@@ -41,7 +47,8 @@ async function smartfetch(url = "", options = {
     //Filter safe headers from object
     return {
       headers: {
-        "Accept": `application/${format}`
+        "Accept": `application/${format}`,
+        "Origin": null
       }
     };
   }
