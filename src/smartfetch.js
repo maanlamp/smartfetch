@@ -25,7 +25,7 @@ export default async function smartfetch (url = "", options = {
 	];
 
 	try {
-		const response = await $try(url, maxTries);
+		const response = await tryfetch(url, maxTries);
 		return await cache(url, await response[format]());
 	} catch (error) {
 		if (error.status) return error;
@@ -36,7 +36,7 @@ export default async function smartfetch (url = "", options = {
 		//Filter safe headers from object
 		return {
 			headers: {
-				"Accept": `application/${format}`,
+				"Accept": "*",
 				"Origin": null
 			}
 		};
@@ -98,14 +98,14 @@ export default async function smartfetch (url = "", options = {
 		});
 	}
 
-	async function $try (url, maxTries, tries = 0) {
+	async function tryfetch (url, maxTries, tries = 0) {
 		if (tries >= maxTries) throw new Error(`Polling limit (${maxTries}) was exceeded without getting a valid response.`);
 		try {
 			return await fetch(url, fetchOptions);
 		} catch (error) {
 			if (cannotRetry(error)) throw error;
 			await timeout(error, tries++);
-			return $try(url, maxTries, tries);
+			return tryfetch(url, maxTries, tries);
 		}
 	}
 }
