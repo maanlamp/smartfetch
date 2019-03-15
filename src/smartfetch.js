@@ -101,7 +101,7 @@ export default async function smartfetch (url = "", options = {
 	async function tryfetch (url, maxTries, tries = 0) {
 		if (tries >= maxTries) throw new Error(`Polling limit (${maxTries}) was exceeded without getting a valid response.`);
 		try {
-			return await fetch(url, fetchOptions);
+			return fetch(url, fetchOptions);
 		} catch (error) {
 			if (cannotRetry(error)) throw error;
 			await timeout(error, tries++);
